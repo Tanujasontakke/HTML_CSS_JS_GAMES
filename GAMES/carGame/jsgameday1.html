@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript GAME</title>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200;1,300&display=swap" rel="stylesheet"> 
+    <style>
+        *{ margin: 0; padding: 0;
+            font-family: 'Josefin Sans', sans-serif;
+         }
+        .hide{ display: none; }
+        .carGame{
+            width:100%;
+            height: 100vh;
+            background-image: url('c.jpg');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .car, .enemy{
+            width:40px; height:80px; background: plum;
+            position:absolute ;
+            bottom: 120px;
+            background-image: url('car1.png');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+
+        }
+        .gameArea{
+            width: 400px;
+            height: 100vh;
+            background : #2d3436;
+            margin: auto;
+            position: relative;
+            overflow: hidden;
+            border-right: 7px dashed #c8d6e5;
+            border-left: 7px dashed #c8d6e5;
+        }
+        /*css to make lines */
+        .lines{
+            width: 10px;
+            height: 100px;
+            background: white;
+            position: absolute;
+            margin-left: 195px; /*200-5 => (total road width )/2 - (width of line)/2*/
+        }
+        .score{
+            position: absolute;
+            top:15px;
+            left:40px;
+            background: #10ac84;
+            width:300px;
+            /*height:70px;*/
+            line-height: 70px;
+            text-align: center;
+            color:honeydew;
+            font-size:1.5em;
+           /* font-family: 'Libre Baskerville', serif;*/
+            box-shadow:0 5px 5px #777;
+
+        }
+        .startScreen{
+            position: absolute;
+            background-color: purple;
+            left: 50%;
+            top: 50%;
+            transform:translate(-50%, -50%);/*to place div at center inside another div*/
+            color: white;
+            z-index: 1;/*should be displayed on top and not hind in background*/
+            text-align: center;
+            border: 1px solid palevioletred;
+            padding: 15px;
+            margin:auto;
+            width:50%;
+            cursor:pointer;
+            letter-spacing:5;/*space between charecters*/
+            font-size: 20px;
+            word-spacing: 3;
+            line-height: 30px;
+            text-transform: uppercase;
+            box-shadow: 0 5px 5px #777;/*horizontal offset , vertical offset, and how much to blur*/
+
+        }
+    </style>
+</head>
+<body>
+    <div class="carGame">
+        <div class="score">
+
+        </div>
+        <div class="startScreen">
+            <p>
+                Press here to start <br>
+                Arrow keys to move <br>
+                If you hit another car you will lose.
+            </p>
+        </div>
+        <div class="gameArea "></div>
+    </div>
+    <script>
+        const score = document.querySelector('.score');//to access the divs in javascript.
+        const startScreen = document.querySelector('.startScreen');
+        const gameArea = document.querySelector('.gameArea');
+
+        //console.log(score);
+        startScreen.addEventListener('click',start)//start the game when the startScreen is clicked
+       
+        let player = { speed :7, score:0};//empty object for assuring that player started the game.
+       //speed is the property of player
+
+        let keys = { ArrowUp : false, ArrowDown : false, ArrowRight: false, ArrowLeft : false};
+        document.addEventListener('keydown',keyDown);//use to tell which key is pressed
+        document.addEventListener('keyup',keyUp);//the key that is released
+        
+
+        function keyDown(e){
+            e.preventDefault();//to prevent the bydefault functionality of javaScript
+            keys[e.key] =true;
+           // console.log(e.key);//displayed on console
+           // console.log(keys);
+        }
+
+        function keyUp(e){
+            e.preventDefault();
+            keys[e.key] = false;
+            //console.log(e.key);
+           // console.log(keys);
+        }
+
+        function isCollide(a,b){
+            aRect = a.getBoundingClientRect();
+            bRect = b.getBoundingClientRect();
+
+            return !((aRect.bottom < bRect.top) || (aRect.top> bRect.bottom) || (aRect.right<bRect.left) || (aRect.left > bRect.right))
+        }
+
+        function moveLines(){
+            let lines = document.querySelectorAll('.lines');
+            lines.forEach(function(item){ //to show lines 
+                if(item.y >= 700){ //item.y (top position) when value of y will be 700 it will rest and the line of the road appear moving
+                    item.y -= 750;
+                }
+                
+                item.y += player.speed;
+                item.style.top = item.y + "px";
+            })
+        }
+
+        function endGame(){
+            player.start = false;//to end the game after collision
+            startScreen.classList.remove('hide');//unhide the startscreen box
+            startScreen.innerHTML = "Game Over <br> Your final score is: "+player.score + "<br> Press Again to RESTART." ;
+        }
+
+        function moveEnemy(car){
+            let enemy = document.querySelectorAll('.enemy');
+            enemy.forEach(function(item){ //to show lines 
+
+                if(isCollide(car,item)){
+                   // console.log("HIT");
+                   endGame();
+                }
+
+                if(item.y >= 750){ //item.y (top position) when value of y will be 700 it will rest and the line of the road appear moving
+                    item.y = -300;
+                    item.style.left = Math.floor(Math.random()*350) + "px" ;
+                }
+                
+                item.y += player.speed;
+                item.style.top = item.y + "px";
+            })
+        }
+
+        function gamePlay(){
+
+               // console.log("Hey I am clicked");
+                let car = document.querySelector('.car');//to get the value of car 
+                let road = gameArea.getBoundingClientRect();//use to get the (x,y axis,width,height,top,right,bottom,left measurements) value of element through single function
+                //console.log(road);//display on console
+
+                if(player.start){
+                     
+                    moveLines();
+                    moveEnemy(car);
+
+                    if(keys.ArrowUp && player.y >(road.top + 105)){ player.y -= player.speed}//increament by 5 
+                    if(keys.ArrowDown && player.y <(road.bottom - 85)){player.y += player.speed}//decrement by  5
+                    if(keys.ArrowLeft && player.x>0 ){player.x -= player.speed}
+                    //width of road - width of car constrain to stop car going out of road from right side.
+                    if(keys.ArrowRight && player.x<(road.width - 50)){player.x += player.speed}
+
+                    //using css inside javaScript 
+                    //to move object with help of keys
+                    car.style.top = player.y + "px";//concatenate value with px(pixel)
+                    car.style.left = player.x + "px";
+
+                    window.requestAnimationFrame(gamePlay);
+                    /*Note: Your callback routine must itself call requestAnimationFrame() if you want to animate another frame at the next repaint.*/
+                    
+                    console.log(player.score++);
+                    
+                    player.score++;
+                    let ps = player.score - 2;
+                    score.innerText = "SCORE : "+ ps;
+                }
+            }
+
+    
+
+        function start(){
+
+            //gameArea.classList.remove('hide');
+            startScreen.classList.add('hide');//to hide the start screen once the game begins
+            gameArea.innerHTML = "";
+
+            player.start = true;
+            player.score = 0;
+            window.requestAnimationFrame(gamePlay);//loop multiple times inside the same function (in javaScript we bydefault have window object, so it's ok even if not written) here game will start
+
+
+            for(x=0; x<6; x++)
+            {
+                let roadLine = document.createElement('div');//create new div with javascript
+                roadLine.setAttribute('class','lines');//class lines setAttribute(name,value)
+                roadLine.y = (x*140);
+                roadLine.style.top =roadLine.y + "px";//50px gap in between
+                gameArea.appendChild(roadLine);//to append the div with gameArea
+ 
+            }
+
+           
+            let car = document.createElement('div');//create div element by javascript.
+            car.setAttribute('class', 'car');//attribute is class and class name is car.
+            //car.innerText = "hey i am ur car";//just to check if the class is added or not
+            gameArea.appendChild(car);//to add div inside gameArea div
+            
+
+            player.x= car.offsetLeft;//property of player
+            player.y= car.offsetTop;
+
+           // console.log("top position" +car.offsetTop);
+            //console.log("left position" +car.offsetLeft);
+        
+            for(x=0; x<3; x++)
+            {
+                let enemyCar = document.createElement('div');//create new div with javascript for enemy cars
+                enemyCar.setAttribute('class','enemy');
+                enemyCar.y = ((x+1)*350) * -1;
+                enemyCar.style.top =enemyCar.y + "px";//50px gap in between
+                enemyCar.style.backgroundColor = randomColor();
+                enemyCar.style.left = Math.floor(Math.random() * 350) + "px";//to get random positions of enemyCar and get that value in int
+                gameArea.appendChild(enemyCar);//to append the div with gameArea
+ 
+            }
+
+        }
+        function randomColor(){
+            function c(){
+                let hex = Math.floor(Math.random() * 256).toString(16);//to get 2 hex digits
+                return ("0" + String(hex)).substr(-2);//concatenate 0 and get the last 2 digits //it will surely give 2 digits in any condition  
+            }
+            return "#"+c()+c()+c();
+        }
+        
+    </script>
+</body>
+</html>

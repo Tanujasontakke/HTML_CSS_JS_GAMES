@@ -1,0 +1,101 @@
+<html>
+
+<head>
+    <title>GameSpace</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            font-size: 17px;
+            background-image: url('firewatch.png');
+            background-repeat: no-repeat;
+            background-attachment: fixed;  
+            background-size: cover;
+        }   
+        .content {
+            position: fixed;
+            bottom: 0;
+            top: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: #f1f1f1;
+            width: 100%;
+            padding: 20px;
+            overflow: scroll;
+        }
+           
+     
+        .column {
+            float: left;
+            width: 270px;
+            height: 270px;
+            padding: 5px;
+        }
+        /* Clearfix (clear floats) */
+        
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        /*Responsive layout*/
+        
+        @media screen and (max-width: 500px) {
+            .column {
+                width: 100%;
+            }
+        }
+        
+        h3 {
+            color: #08f7fe;
+        }
+    </style>
+</head>
+
+<body>
+ 
+
+    <div class="content">
+        <h3>LET's get STARTED.....🔥(click on images to play the game)</h3>
+        <div class="row">
+            <div class="column">
+                <a href="./GAMES/Tetris/index.html" target="_blank">
+                    <img src="./icon-images/tetris.jpg" alt="Forest" style="width:100%">
+                </a>
+            </div>
+            <div class="column">
+                <a href="./GAMES/MemGame-master/index.html" target="_blank">
+                    <img src="./icon-images/memory.jfif" alt="Mountains" style="width:100%">
+                </a>
+            </div>
+
+
+            <div class="column">
+                <a href="./GAMES/carGame/jsgameday1.html" target="_blank">
+                    <img src="./icon-images/car.jfif" alt="Mountains" style="width:100%">
+                </a>
+            </div>
+            <div class="column">
+                <a href="./GAMES/ball game/game.html" target="_blank">
+                    <img src="./icon-images/pong.png" alt="Mountains" width="270" height="270">
+                </a>
+            </div>
+            <div class="column">
+                <a href="./GAMES/rock-paper-scissors/index.html" target="_blank">
+                    <img src="./icon-images/RPS.png" alt="Mountains" width="270" height="270">
+                </a>
+            </div>
+            <div class="column">
+                <a href="./GAMES/tictactoe/tictactoe.html"target="_blank">
+                    <img src="./icon-images/tic.png" alt="Snow" style="width:100%">
+                </a>
+            </div>
+
+
+        </div>
+        
+
+    </div>
+
+    
+
+</html>

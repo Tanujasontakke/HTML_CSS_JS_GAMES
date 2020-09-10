@@ -1,0 +1,104 @@
+*{
+   padding: 0;
+   margin: 0;
+   box-sizing: border-box;
+   font-family: 'Asap', sans-serif;
+
+}
+body{
+    background-color: #292c34;
+}
+
+header{
+    background: white;
+    padding: 20px;
+}
+header > h1{
+    color: black;
+    text-align: center;
+   
+}
+
+
+.score-board{
+    margin: 20px auto;
+    border: 3px solid white;
+    border-radius: 4px;
+    text-align: center;
+    width: 200px;
+    color: white;
+    font-size: 40px;
+    padding: 15px 20px;
+    position: relative;
+}
+
+.badge{
+    background-color: #E2584D;
+    color: white;
+    font-size: 14px;
+    padding: 2px 10px;
+    
+}
+
+#user-label{
+    position: absolute;/*to position it */
+    top: 30px;
+    left: -25px;
+}
+
+#computer-label{
+    position: absolute;
+    top: 30px;
+    right: -30px;
+}
+
+.result{
+    font-size: 40px;
+    color: white;
+}
+
+.result > p{
+    text-align: center;
+    font-weight: bold;
+}
+
+.choices{
+    margin: 30px 0;
+    text-align: center;
+}
+.choice{
+    border: 4px solid white;
+    display: inline-block;
+    border-radius: 50%; /*always use percentages*/
+    padding: 10px;
+    margin: 0 20px;
+    transition: all 0.3s ease;/*0.3s is 0.3 seconds*/
+}
+
+.choice:hover{
+    cursor: pointer;
+    background: rgba(109, 108, 108, 0.849);
+}
+
+#action-message{
+    text-align: center;
+    color: rgb(245, 119, 218);
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.green-glow{
+    border: 4px solid #4dcc7d;
+    box-shadow: 0 0 10px #31b43a;/*optional value of how far the shadow can go can be given */
+}
+
+.red-glow{
+    border: 4px solid #fc121b;
+    box-shadow: 0 0 10px #d01115;
+}
+
+.blue-glow{
+    border:4px solid #258de2;
+    box-shadow: 0 0 10px #1748d1;
+}
